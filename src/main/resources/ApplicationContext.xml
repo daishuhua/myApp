@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="HelloWorld" class="com.tutorial.spring.di.impl.ChHello">
+		<property name="msg">
+			<value>HelloWorld</value>
+		</property>
+		<property name="date">
+			<ref bean="date" />
+		</property>
+	</bean>
+	<bean id="date" class="java.util.Date" />
+
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename">
+			<value>messages</value>
+		</property>
+	</bean>
+
+	<bean id="log" class="com.tutorial.spring.aop.LogAround" />
+	<bean id="timeBook" class="com.tutorial.spring.aop.impl.TimeBook" />
+	<bean id="logProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces">
+			<value>com.tutorial.spring.aop.TimeBookInterface</value>
+		</property>
+		<property name="target">
+			<ref bean="timeBook" />
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>log</value>
+			</list>
+		</property>
+	</bean>
+	<!-- 以下实现Before通知 -->
+	<bean id="logBefore" class="com.tutorial.spring.aop.LogBefore" />
+<!-- 	<bean id="logBeforeAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor"> -->
+<!-- 		<property name="advice"> -->
+<!-- 			<ref bean="logBefore"/> -->
+<!-- 		</property> -->
+<!-- 		<property name="patterns"> -->
+<!-- 			<value>.*do.*</value> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+<!-- 	<bean id="logProxy2" class="org.springframework.aop.framework.ProxyFactoryBean"> -->
+<!-- 		<property name="proxyInterfaces"> -->
+<!-- 			<value>com.tutorial.spring.aop.TimeBookInterface</value> -->
+<!-- 		</property> -->
+<!-- 		<property name="target"> -->
+<!-- 			<ref bean="timeBook"/> -->
+<!-- 		</property> -->
+<!-- 		<property name="interceptorNames"> -->
+<!-- 			<list> -->
+<!-- 				<value>logBeforeAdvisor</value> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+	
+	<!-- 以下实现After通知 -->
+	<bean id="logAfter" class="com.tutorial.spring.aop.LogAfter"/>
+<!-- 	<bean id="logAfterAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor"> -->
+<!-- 		<property name="advice"> -->
+<!-- 			<ref bean="logAfter"/> -->
+<!-- 		</property> -->
+<!-- 		<property name="patterns"> -->
+<!-- 			<value>.*do.*</value> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+<!-- 	<bean id="logProxy3" class="org.springframework.aop.framework.ProxyFactoryBean"> -->
+<!-- 		<property name="proxyInterfaces"> -->
+<!-- 			<value>com.tutorial.spring.aop.TimeBookInterface</value> -->
+<!-- 		</property> -->
+<!-- 		<property name="target"> -->
+<!-- 			<ref bean="timeBook"/> -->
+<!-- 		</property> -->
+<!-- 		<property name="interceptorNames"> -->
+<!-- 			<list> -->
+<!-- 				<value>logAfterAdvisor</value> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+	<!-- 以下实现Thorw通知	 -->
+<!-- 	<bean id="logThrow" class="com.tutorial.spring.aop.LogThrow"/> -->
+<!-- 	<bean id="logThrowAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor"> -->
+<!-- 		<property name="advice"> -->
+<!-- 			<ref bean="logThrow"/> -->
+<!-- 		</property> -->
+<!-- 		<property name="patterns"> -->
+<!-- 			<value>.*doAuditing.*</value> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+<!-- 	<bean id="logProxy4" class="org.springframework.aop.framework.ProxyFactoryBean"> -->
+<!-- 		<property name="proxyInterfaces"> -->
+<!-- 			<value>com.tutorial.spring.aop.TimeBookInterface</value> -->
+<!-- 		</property> -->
+<!-- 		<property name="target"> -->
+<!-- 			<ref bean="timeBook"/> -->
+<!-- 		</property> -->
+<!-- 		<property name="interceptorNames"> -->
+<!-- 			<list> -->
+<!-- 				<value>logThrowAdvisor</value> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+	
+	<bean id="autoProxyCreator" class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
+	<bean id="logic1" class="com.tutorial.spring.aop.impl.Logic1"/>
+	<bean id="logic2" class="com.tutorial.spring.aop.impl.Logic2"/>
+
+	<bean id="exceptionHandler" class="com.tutorial.spring.aop.handler.ExceptionHandler"/>
+	<bean id="exceptionHandlerAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice">
+			<ref bean="exceptionHandler"/>
+		</property>
+		<property name="patterns">
+			<value>.*do.*</value>
+		</property>
+	</bean>
+	
+	<bean id="timeHandler" class="com.tutorial.spring.aop.handler.TimeHandler"/>
+	<bean id="timeHandlerAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice">
+			<ref bean="timeHandler"/>
+		</property>
+		<property name="patterns">
+			<value>.*do.*</value>
+		</property>
+	</bean>
+
+</beans>
